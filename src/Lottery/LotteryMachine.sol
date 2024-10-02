@@ -3,8 +3,8 @@ pragma solidity ^0.8.19;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "../interfaces/IRandomNumberGenerator.sol";
-import "../libraries/Ownable.sol";
-import "../libraries/ReentrancyGuard.sol";
+import "../abstract/Ownable.sol";
+import "../abstract/ReentrancyGuard.sol";
 
 contract LotteryMachine is Ownable, ReentrancyGuard {
     using SafeERC20 for IERC20;
