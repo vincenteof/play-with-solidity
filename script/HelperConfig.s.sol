@@ -32,6 +32,9 @@ contract HelperConfig is Script {
         public
         returns (NetworkConfig memory networConfig)
     {
+        if (activeNetworkConfig.priceFeed == address(0)) {
+            return activeNetworkConfig;
+        }
         vm.startBroadcast();
         MockV3Aggregator mockPriceFeed = new MockV3Aggregator(8, 20000e8);
         vm.stopBroadcast();
