@@ -57,4 +57,23 @@ contract FundMe is Ownable {
     function getVersion() public view returns (uint256) {
         return priceFeed.version();
     }
+
+    function getAddressToAmountFunded(
+        address funderAddress
+    ) external view returns (uint256) {
+        return addressToAmountFunded[funderAddress];
+    }
+
+    function getFunder(uint256 index) public view returns (address) {
+        return funders[index];
+    }
+
+    function getBalance() public view returns (uint256) {
+        uint256 balance;
+        for (uint256 i; i < funders.length; i++) {
+            address funder = funders[i];
+            balance += addressToAmountFunded[funder];
+        }
+        return balance;
+    }
 }
