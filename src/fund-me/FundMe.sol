@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import "../abstract/Ownable.sol";
 import {PriceConverter} from "../libraries/PriceConverter.sol";
-
+import "../abstract/Ownable.sol";
 contract FundMe is Ownable {
     uint256 public constant MINIMUM_USD = 5 * 10 ** 18;
-    address private fundOwner;
     address[] private funders;
     mapping(address => uint256) private addressToAmountFunded;
     AggregatorV3Interface private priceFeed;
 
     constructor(address _priceFeed) Ownable(msg.sender) {
-        fundOwner = msg.sender;
         priceFeed = AggregatorV3Interface(_priceFeed);
     }
 
@@ -38,12 +35,8 @@ contract FundMe is Ownable {
             addressToAmountFunded[funder] = 0;
         }
         funders = new address[](0);
-        (bool success, ) = fundOwner.call{value: total}("");
+        (bool success, ) = owner().call{value: total}("");
         require(success);
-    }
-
-    function getFundOwner() public view returns (address) {
-        return fundOwner;
     }
 
     function getFunders() public view returns (address[] memory) {

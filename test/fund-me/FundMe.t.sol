@@ -20,7 +20,7 @@ contract FundMeTest is Test {
     }
 
     function testOwner() public view {
-        assertEq(fundMe.getFundOwner(), msg.sender);
+        assertEq(fundMe.owner(), msg.sender);
     }
 
     function testPriceFeedVersionIsAccurate() public view {
@@ -82,6 +82,7 @@ contract FundMeTest is Test {
         uint256 startingOwnerBalance = fundMe.owner().balance;
         uint256 startingFundMeBalance = fundMe.getBalance();
 
+        vm.txGasPrice(1);
         vm.startPrank(fundMe.owner());
         fundMe.withdraw();
         vm.stopPrank();
