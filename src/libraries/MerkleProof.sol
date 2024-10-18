@@ -2,12 +2,7 @@
 pragma solidity ^0.8.19;
 
 library MerkleProof {
-    function verify(
-        bytes32[] memory proof,
-        bytes32 root,
-        bytes32 leaf,
-        uint256 index
-    ) public pure returns (bool) {
+    function verify(bytes32[] memory proof, bytes32 root, bytes32 leaf, uint256 index) public pure returns (bool) {
         bytes32 hash = leaf;
         for (uint256 i = 0; i < proof.length; i++) {
             bytes32 proofElement = proof[i];
@@ -19,11 +14,7 @@ library MerkleProof {
         return hash == root;
     }
 
-    function verifyBySorting(
-        bytes32[] memory proof,
-        bytes32 root,
-        bytes32 leaf
-    ) public pure returns (bool) {
+    function verifyBySorting(bytes32[] memory proof, bytes32 root, bytes32 leaf) public pure returns (bool) {
         bytes32 hash = leaf;
         for (uint256 i = 0; i < proof.length; i++) {
             bytes32 proofElement = proof[i];

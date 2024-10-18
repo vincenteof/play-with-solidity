@@ -38,12 +38,10 @@ contract MerkleProofTest is Test {
 
         bytes32 hash12 = keccak256(abi.encodePacked(leaf1, leaf2));
         bytes32 hash34 = keccak256(abi.encodePacked(leaf3, leaf4));
-        bytes32 sortedHash12 = leaf1 < leaf2
-            ? keccak256(abi.encodePacked(leaf1, leaf2))
-            : keccak256(abi.encodePacked(leaf2, leaf1));
-        bytes32 sortedHash34 = leaf3 < leaf4
-            ? keccak256(abi.encodePacked(leaf3, leaf4))
-            : keccak256(abi.encodePacked(leaf4, leaf3));
+        bytes32 sortedHash12 =
+            leaf1 < leaf2 ? keccak256(abi.encodePacked(leaf1, leaf2)) : keccak256(abi.encodePacked(leaf2, leaf1));
+        bytes32 sortedHash34 =
+            leaf3 < leaf4 ? keccak256(abi.encodePacked(leaf3, leaf4)) : keccak256(abi.encodePacked(leaf4, leaf3));
 
         root = keccak256(abi.encodePacked(hash12, hash34));
         sortedRoot = sortedHash12 < sortedHash34
@@ -114,10 +112,7 @@ contract MerkleProofTest is Test {
         bytes32[] memory wrongProof = proofForLeaf1;
         wrongProof[0] = keccak256(abi.encodePacked("wrong"));
         bool valid = MerkleProof.verify(wrongProof, root, leaf1, 0);
-        assertFalse(
-            valid,
-            "Invalid proof with wrong proof element should fail"
-        );
+        assertFalse(valid, "Invalid proof with wrong proof element should fail");
     }
 
     function test_verify_InvalidProof_WrongRoot() public view {
@@ -132,56 +127,33 @@ contract MerkleProofTest is Test {
         assertTrue(valid, "Empty proof where leaf equals root should pass");
 
         bool invalid = MerkleProof.verify(emptyProof, root, leaf1, 0);
-        assertFalse(
-            invalid,
-            "Empty proof where leaf does not equal root should fail"
-        );
+        assertFalse(invalid, "Empty proof where leaf does not equal root should fail");
     }
 
     // --------------------- Tests for verifyBySorting ---------------------
 
     function test_verifyBySorting_ValidProofLeaf1() public view {
-        bool valid = MerkleProof.verifyBySorting(
-            sortedProofForLeaf1,
-            sortedRoot,
-            leaf1
-        );
+        bool valid = MerkleProof.verifyBySorting(sortedProofForLeaf1, sortedRoot, leaf1);
         assertTrue(valid, "Valid sorted proof for leaf1 should pass");
     }
 
     function test_verifyBySorting_ValidProofLeaf2() public view {
-        bool valid = MerkleProof.verifyBySorting(
-            sortedProofForLeaf2,
-            sortedRoot,
-            leaf2
-        );
+        bool valid = MerkleProof.verifyBySorting(sortedProofForLeaf2, sortedRoot, leaf2);
         assertTrue(valid, "Valid sorted proof for leaf2 should pass");
     }
 
     function test_verifyBySorting_ValidProofLeaf3() public view {
-        bool valid = MerkleProof.verifyBySorting(
-            sortedProofForLeaf3,
-            sortedRoot,
-            leaf3
-        );
+        bool valid = MerkleProof.verifyBySorting(sortedProofForLeaf3, sortedRoot, leaf3);
         assertTrue(valid, "Valid sorted proof for leaf3 should pass");
     }
 
     function test_verifyBySorting_ValidProofLeaf4() public view {
-        bool valid = MerkleProof.verifyBySorting(
-            sortedProofForLeaf4,
-            sortedRoot,
-            leaf4
-        );
+        bool valid = MerkleProof.verifyBySorting(sortedProofForLeaf4, sortedRoot, leaf4);
         assertTrue(valid, "Valid sorted proof for leaf4 should pass");
     }
 
     function test_verifyBySorting_InvalidProof_WrongLeaf() public view {
-        bool valid = MerkleProof.verifyBySorting(
-            sortedProofForLeaf1,
-            sortedRoot,
-            leaf2
-        );
+        bool valid = MerkleProof.verifyBySorting(sortedProofForLeaf1, sortedRoot, leaf2);
         assertFalse(valid, "Invalid sorted proof with wrong leaf should fail");
     }
 
@@ -189,34 +161,21 @@ contract MerkleProofTest is Test {
         bytes32[] memory wrongProof = proofForLeaf1;
         wrongProof[0] = keccak256(abi.encodePacked("wrong"));
         bool valid = MerkleProof.verifyBySorting(wrongProof, sortedRoot, leaf1);
-        assertFalse(
-            valid,
-            "Invalid sorted proof with wrong proof element should fail"
-        );
+        assertFalse(valid, "Invalid sorted proof with wrong proof element should fail");
     }
 
     function test_verifyBySorting_InvalidProof_WrongRoot() public view {
         bytes32 wrongRoot = keccak256(abi.encodePacked("wrong root"));
-        bool valid = MerkleProof.verifyBySorting(
-            sortedProofForLeaf1,
-            wrongRoot,
-            leaf1
-        );
+        bool valid = MerkleProof.verifyBySorting(sortedProofForLeaf1, wrongRoot, leaf1);
         assertFalse(valid, "Invalid sorted proof with wrong root should fail");
     }
 
     function test_verifyBySorting_EmptyProof() public view {
         bytes32[] memory emptyProof;
         bool valid = MerkleProof.verifyBySorting(emptyProof, leaf1, leaf1);
-        assertTrue(
-            valid,
-            "Empty sorted proof where leaf equals root should pass"
-        );
+        assertTrue(valid, "Empty sorted proof where leaf equals root should pass");
 
         bool invalid = MerkleProof.verifyBySorting(emptyProof, root, leaf1);
-        assertFalse(
-            invalid,
-            "Empty sorted proof where leaf does not equal root should fail"
-        );
+        assertFalse(invalid, "Empty sorted proof where leaf does not equal root should fail");
     }
 }

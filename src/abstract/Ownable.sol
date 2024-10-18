@@ -25,11 +25,11 @@ abstract contract Ownable {
 
     modifier onlyOwner() {
         _checkOwner();
-        _;   
+        _;
     }
-    
+
     function owner() public view virtual returns (address) {
-        return _owner; 
+        return _owner;
     }
 
     function _checkOwner() internal view virtual {
@@ -37,7 +37,7 @@ abstract contract Ownable {
             revert OwnableUnauthorizedAccount(msg.sender);
         }
     }
-    
+
     function renounceOwnership() public virtual onlyOwner {
         _transferOwnership(address(0));
     }
@@ -45,7 +45,7 @@ abstract contract Ownable {
     function transferOwnership(address newOwner) public virtual onlyOwner {
         if (newOwner == address(0)) {
             revert OwnableInvalidOwner(newOwner);
-        }   
+        }
         _transferOwnership(newOwner);
     }
 

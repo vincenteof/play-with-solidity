@@ -15,10 +15,7 @@ import "../interfaces/IRandomNumberGenerator.sol";
  * @title The RandomNumberConsumerV2_5 contract
  * @notice A contract that gets random values from Chainlink VRF V2_5
  */
-contract SimpleRandomNumberGenerator is
-    VRFConsumerBaseV2Plus,
-    IRandomNumberGenerator
-{
+contract SimpleRandomNumberGenerator is VRFConsumerBaseV2Plus, IRandomNumberGenerator {
     // Your subscription ID.
     uint256 immutable s_subscriptionId;
 
@@ -55,11 +52,9 @@ contract SimpleRandomNumberGenerator is
      * @param vrfCoordinator - coordinator, check https://docs.chain.link/vrf/v2-5/supported-networks
      * @param keyHash - the gas lane to use, which specifies the maximum gas price to bump to
      */
-    constructor(
-        uint256 subscriptionId,
-        address vrfCoordinator,
-        bytes32 keyHash
-    ) VRFConsumerBaseV2Plus(vrfCoordinator) {
+    constructor(uint256 subscriptionId, address vrfCoordinator, bytes32 keyHash)
+        VRFConsumerBaseV2Plus(vrfCoordinator)
+    {
         s_keyHash = keyHash;
         s_subscriptionId = subscriptionId;
     }
@@ -77,9 +72,7 @@ contract SimpleRandomNumberGenerator is
                 requestConfirmations: REQUEST_CONFIRMATIONS,
                 callbackGasLimit: CALLBACK_GAS_LIMIT,
                 numWords: NUM_WORDS,
-                extraArgs: VRFV2PlusClient._argsToBytes(
-                    VRFV2PlusClient.ExtraArgsV1({nativePayment: false})
-                )
+                extraArgs: VRFV2PlusClient._argsToBytes(VRFV2PlusClient.ExtraArgsV1({nativePayment: false}))
             })
         );
         emit RequestedRandNumber();
@@ -91,10 +84,7 @@ contract SimpleRandomNumberGenerator is
      * @param  - id of the request
      * @param randomWords - array of random results from VRF Coordinator
      */
-    function fulfillRandomWords(
-        uint256 /* requestId */,
-        uint256[] calldata randomWords
-    ) internal override {
+    function fulfillRandomWords(uint256, /* requestId */ uint256[] calldata randomWords) internal override {
         s_randomWords = randomWords;
         emit ReturnedRandNumber(randomWords);
     }
