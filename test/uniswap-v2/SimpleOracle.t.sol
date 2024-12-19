@@ -6,17 +6,17 @@ import {IUniswapV2Pair} from "../../lib/v2-core/contracts/interfaces/IUniswapV2P
 import {IUniswapV2Router02} from "../../lib/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import {IERC20} from "../../lib/v2-core/contracts/interfaces/IERC20.sol";
 import {DAI, WETH, UNISWAP_V2_PAIR_DAI_WETH, UNISWAP_V2_ROUTER_02} from "../../src/Constants.sol";
-import {UniswapV2OracleSimple} from "../../src/uniswap-v2/UniswapV2OracleSimple.sol";
+import {SimpleOracle} from "../../src/uniswap-v2/SimpleOracle.sol";
 
 contract UniswapV2OracleSimpleTest is Test {
-    UniswapV2OracleSimple private oracle;
+    SimpleOracle private oracle;
     IERC20 private constant weth = IERC20(WETH);
     IUniswapV2Pair private constant pair = IUniswapV2Pair(UNISWAP_V2_PAIR_DAI_WETH);
     IUniswapV2Router02 private constant router = IUniswapV2Router02(UNISWAP_V2_ROUTER_02);
     uint256 private constant MIN_WAIT = 300;
 
     function setUp() public {
-        oracle = new UniswapV2OracleSimple(address(pair));
+        oracle = new SimpleOracle(address(pair));
     }
 
     function getSpot() internal view returns (uint256) {
@@ -54,8 +54,8 @@ contract UniswapV2OracleSimpleTest is Test {
 
         uint256 twap1 = oracle.consult(WETH, 1e18);
 
-        console.log('twap0: ', twap0);
-        console.log('twap1: ', twap1);
+        console.log("twap0: ", twap0);
+        console.log("twap1: ", twap1);
 
         assertApproxEqAbs(twap0, twap1, 1, "ETH TWAP");
     }

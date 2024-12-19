@@ -5,7 +5,7 @@ import {console} from "forge-std/Test.sol";
 import {IUniswapV2Pair} from "../../lib/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 import "../../src/libraries/UQ112x112.sol";
 
-contract UniswapV2OracleSimple {
+contract SimpleOracle {
     using UQ112x112 for uint224;
 
     uint256 private constant MIN_WAIT = 300;
