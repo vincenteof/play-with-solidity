@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
+import {console} from "forge-std/Test.sol";
 import {IUniswapV2Pair} from "../../lib/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 import "../../src/libraries/UQ112x112.sol";
 
@@ -100,7 +101,7 @@ contract SlidingWindowOracle {
         uint256 timeElapsed,
         uint256 amountIn
     ) private pure returns (uint256 amountOut) {
-        amountOut = (priceCumulativeEnd - priceCumulativeStart) * amountIn / timeElapsed;
+        amountOut = (priceCumulativeEnd - priceCumulativeStart) * amountIn / timeElapsed / UQ112x112.Q112;
     }
 
     function update(address tokenA, address tokenB) external {
@@ -111,11 +112,16 @@ contract SlidingWindowOracle {
         }
 
         uint8 observationIndex = observationIndexOf(block.timestamp);
+        // console.log("observationIndex: ", observationIndex);
+
         Observation storage observation = pairObservations[pair][observationIndex];
 
         uint256 timeElapsed = block.timestamp - observation.timestamp;
         if (timeElapsed > periodSize) {
+            // console.log("timeElapsed: ", timeElapsed);
             (uint256 price0Cumulative, uint256 price1Cumulative) = _currentCumulativePrices(pair);
+            // console.log("price0Cumulative: ", price0Cumulative);
+            // console.log("price1Cumulative: ", price1Cumulative);
             observation.timestamp = block.timestamp;
             observation.price0Cumulative = price0Cumulative;
             observation.price1Cumulative = price1Cumulative;
