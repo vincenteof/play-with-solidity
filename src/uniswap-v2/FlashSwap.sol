@@ -5,7 +5,7 @@ import {IUniswapV2Callee} from "../../lib/v2-core/contracts/interfaces/IUniswapV
 import {IUniswapV2Pair} from "../../lib/v2-core/contracts/interfaces/IUniswapV2Pair.sol";
 import {IERC20} from "../../lib/v2-core/contracts/interfaces/IERC20.sol";
 
-contract UniswapV2FlashSwap is IUniswapV2Callee {
+contract FlashSwap is IUniswapV2Callee {
     IUniswapV2Pair private immutable pair;
     address private immutable token0;
     address private immutable token1;
