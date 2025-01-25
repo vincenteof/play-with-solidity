@@ -41,7 +41,9 @@ contract MerkleAirdropClaimerTest is Test {
             Reward memory reward = rewards[i];
             bytes32[] memory proof = MerkleHelper.getProofBySorting(hashes, i);
             claimer.claim(address(token), reward.to, reward.amount, proof);
+            // todo: balance assert
         }
+        // todo: balance assert
     }
 
     function testClaimWithInvalidUsers() public {
@@ -50,6 +52,8 @@ contract MerkleAirdropClaimerTest is Test {
             bytes32[] memory proof = MerkleHelper.getProofBySorting(hashes, i);
             vm.expectRevert();
             claimer.claim(address(token), reward.to, reward.amount + 10, proof);
+            // todo: balance assert
         }
+        // todo: balance assert
     }
 }
